@@ -1,0 +1,16 @@
+.DetectButton {
+    margin-inline-start: 1.2rem;
+}
+
+.DetectButton-ColorValue {
+    width: 2rem;
+}
+
+.DetectButton-ColorWrapper {
+    margin-inline-start: 1.2rem;
+}
+
+.DetectButton-Wrapper {
+    display: flex;
+    flex-wrap: wrap;
+}
