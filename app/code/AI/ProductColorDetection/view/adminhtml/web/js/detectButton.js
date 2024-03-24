@@ -32,13 +32,16 @@ define([
             // Bind the click event to your custom function
             $(document).on('click', '.DetectButton', function() {
                 const imagesSources = [];
-                $('.product-image').each(function() {
+
+                $(this).parent().siblings(".gallery").find('.product-image').each(function() {
                     const imgSrc = $(this).attr("src")
                     imagesSources.push(imgSrc);
                 });
+
                 self.images = imagesSources;
                 $('body').trigger('processStart');
                 $(this).siblings(".DetectButton-ColorWrapper").find('#DetectButton-ColorValue').css({ "background-color": "#FFF" });
+                console.log(self.images);
                 $('body').trigger('processStop');
             });
         },

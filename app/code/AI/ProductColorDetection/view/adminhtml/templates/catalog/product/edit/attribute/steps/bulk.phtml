@@ -508,8 +508,8 @@ $jsonHelper = $block->getData('jsonHelper');
                                 </div>
                             </script>
                         </div>
+                        <?= /* @noEscape */ $block->getChildHtml('ProductColorDetection') ?>
                     </li>
-                    <?= /* @noEscape */ $block->getChildHtml('ProductColorDetection') ?>
                     <!-- /ko -->
                 </ul>
             </div>
