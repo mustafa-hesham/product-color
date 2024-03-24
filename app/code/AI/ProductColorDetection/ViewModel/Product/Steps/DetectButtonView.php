@@ -10,9 +10,7 @@
 namespace AI\ProductColorDetection\ViewModel\Product\Steps;
 
 use Magento\Framework\View\Element\Block\ArgumentInterface;
-use AI\ProductColorDetection\Block\Adminhtml\Product\Steps\DetectButton;
 use Magento\Framework\Serialize\SerializerInterface;
-use PhpParser\Node\Stmt\Return_;
 
 class DetectButtonView implements ArgumentInterface
 {

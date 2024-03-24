@@ -32,10 +32,13 @@ define([
             // Bind the click event to your custom function
             $(document).on('click', '.DetectButton', function() {
                 const imagesSources = [];
+                self.images = [];
 
                 $(this).parent().siblings(".gallery").find('.product-image').each(function() {
-                    const imgSrc = $(this).attr("src")
-                    imagesSources.push(imgSrc);
+                    const imgSrc = $(this).attr("src");
+                    if ($(this).parent().is(":visible")) {
+                        imagesSources.push(imgSrc);
+                    }
                 });
 
                 self.images = imagesSources;
