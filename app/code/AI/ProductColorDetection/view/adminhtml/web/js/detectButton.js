@@ -34,21 +34,23 @@ define([
                 }
             } = window;
 
-            const requestUrl = origin + '/rest/V1/detectColor';
+            const requestUrl = origin + '/rest/admin/V1/detectColor';
 
-            const response = await fetch(requestUrl, {
+            $('body').trigger('processStart');
+            const response = await fetch(this.controllerUrl, {
                 method: "POST",
                 mode: "cors",
                 cache: "no-cache",
                 credentials: "same-origin",
                 headers: {
-                  "Content-Type": "application/json"
+                  "Content-Type": "application/json",
+                  "Authorization": `Bearer ${this.authToken}`
                 },
-                body: JSON.stringify({data: `${data}`, form_key: `${this.formKey}`}),
-                showLoader: true,
+                body: JSON.stringify({data: `${data}`, form_key: `${this.formKey}`})
               });
-
+              console.log(this.controllerUrl);
               const responseData = await response.json();
+              $('body').trigger('processStop');
 
               return JSON.parse(responseData);
         },

@@ -13,6 +13,7 @@ use Magento\Store\Model\StoreManagerInterface;
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Element\Template\Context;
 use Magento\Framework\Data\Form\FormKey;
+use Magento\Framework\Stdlib\CookieManagerInterface;
 
 class DetectButton extends Template
 {
@@ -32,15 +33,30 @@ class DetectButton extends Template
     protected FormKey $formKey;
 
     /**
+     * @var CookieManagerInterface
+     */
+    protected CookieManagerInterface $cookieManager;
+
+    /**
      * Constructor function
      *
      * @param StoreManagerInterface $storeManager
+     * @param Context $context
+     * @param FormKey $formKey
+     * @param CookieManagerInterface $cookieManager
+     * @param array $data
      */
-    public function __construct(StoreManagerInterface $storeManager, Context $context, FormKey $formKey, array $data = [])
-    {
+    public function __construct(
+        StoreManagerInterface $storeManager,
+        Context $context,
+        FormKey $formKey,
+        CookieManagerInterface $cookieManager,
+        array $data = []
+    ) {
         parent::__construct($context, $data);
         $this->storeManager = $storeManager;
         $this->formKey = $formKey;
+        $this->cookieManager = $cookieManager;
     }
 
     /**
@@ -51,5 +67,15 @@ class DetectButton extends Template
     public function getFormKey(): string
     {
         return $this->formKey->getFormKey();
+    }
+
+    /**
+     * Returns admin auth token.
+     *
+     * @return string
+     */
+    public function getAdminAuthToken(): string
+    {
+        return $this->cookieManager->getCookie('admin');
     }
 }

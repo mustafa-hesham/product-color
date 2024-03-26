@@ -14,8 +14,8 @@ interface DetectColorInterface
     /**
      * Returns product color relevant data.
      *
-     * @param string $data
+     * @param mixed $data
      * @return string
      */
-    public function getColors(string $data): string;
+    public function getColors($data): string;
 }
