@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * AI_ProductColorDetection
+ *
+ * @category AI
+ * @package AI_ProductColorDetection
+ */
+ -->
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
+    <route url="/V1/detectColor" method="POST">
+        <service class="AI\ProductColorDetection\Api\DetectColorInterface" method="getColors"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+</routes>

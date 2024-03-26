@@ -30,7 +30,9 @@ $detectButton = $block->getData('detectButton');
         "Magento_Ui/js/core/app": {
             "components": {
                 "<?= /* @noEscape */ $detectButton->getComponentName() ?>": {
-                    "component": "AI_ProductColorDetection/js/detectButton"
+                    "component": "AI_ProductColorDetection/js/detectButton",
+                    "controllerUrl": "<?= /* @noEscape */ $block->getUrl('rest/V1/detectColor') ?>",
+                    "formKey": "<?= /* @noEscape */ $block->getFormKey() ?>"
                 }
             }
         }
