@@ -31,8 +31,7 @@ $detectButton = $block->getData('detectButton');
             "components": {
                 "<?= /* @noEscape */ $detectButton->getComponentName() ?>": {
                     "component": "AI_ProductColorDetection/js/detectButton",
-                    "controllerUrl": "<?= /* @noEscape */ $block->getUrl('rest/V1/detectColor') ?>",
-                    "formKey": "<?= /* @noEscape */ $block->getDetectColorKey() ?>"
+                    "controllerUrl": "<?= /* @noEscape */ '/rest/V1/detectColor' ?>"
                 }
             }
         }

@@ -35,7 +35,7 @@ define([
                 }
             } = window;
 
-            const requestUrl = origin + '/rest/V1/detectColor';
+            const requestUrl = origin + this.controllerUrl;
 
             $('body').trigger('processStart');
             const response = await fetch(requestUrl, {
