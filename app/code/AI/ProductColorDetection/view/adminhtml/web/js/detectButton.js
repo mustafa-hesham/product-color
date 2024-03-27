@@ -25,6 +25,7 @@ define([
             this._super();
             this.images = [];
             this.bindCustomEvent();
+            this.detect_color_key = $.cookie("detect_color_key");
         },
 
         sendPostRequest: async function(data) {
@@ -34,21 +35,20 @@ define([
                 }
             } = window;
 
-            const requestUrl = origin + '/rest/admin/V1/detectColor';
+            const requestUrl = origin + '/rest/V1/detectColor';
 
             $('body').trigger('processStart');
-            const response = await fetch(this.controllerUrl, {
+            const response = await fetch(requestUrl, {
                 method: "POST",
                 mode: "cors",
                 cache: "no-cache",
                 credentials: "same-origin",
                 headers: {
-                  "Content-Type": "application/json",
-                  "Authorization": `Bearer ${this.authToken}`
+                  "Content-Type": "application/json"
                 },
-                body: JSON.stringify({data: `${data}`, form_key: `${this.formKey}`})
+                body: JSON.stringify({data: {image: `${data}`, form_key: `${this.detect_color_key}`}})
               });
-              console.log(this.controllerUrl);
+
               const responseData = await response.json();
               $('body').trigger('processStop');
 

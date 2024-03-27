@@ -12,11 +12,16 @@ namespace AI\ProductColorDetection\Block\Adminhtml\Product\Steps;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Element\Template\Context;
-use Magento\Framework\Data\Form\FormKey;
+use Magento\Framework\Session\SessionManagerInterface;
+use Magento\Framework\Math\Random;
 use Magento\Framework\Stdlib\CookieManagerInterface;
+use Magento\Framework\Stdlib\Cookie\CookieMetadataFactory;
+use Magento\Framework\Escaper;
 
 class DetectButton extends Template
 {
+    public const DETECT_COLOR_KEY = 'detect_color_key';
+
     /**
      * @var Context
      */
@@ -28,9 +33,14 @@ class DetectButton extends Template
     protected StoreManagerInterface $storeManager;
 
     /**
-     * @var FormKey
+     * @var Random
      */
-    protected FormKey $formKey;
+    protected Random $randomKey;
+
+    /**
+     * @var SessionManagerInterface
+     */
+    protected SessionManagerInterface $sessionManager;
 
     /**
      * @var CookieManagerInterface
@@ -38,25 +48,44 @@ class DetectButton extends Template
     protected CookieManagerInterface $cookieManager;
 
     /**
+     * @var CookieMetadataFactory
+     */
+    protected CookieMetadataFactory $cookieMetadataFactory;
+
+    /**
+     * @var Escaper
+     */
+    protected Escaper $escaper;
+
+    /**
      * Constructor function
      *
      * @param StoreManagerInterface $storeManager
      * @param Context $context
-     * @param FormKey $formKey
+     * @param Random $randomKey
+     * @param SessionManagerInterface $sessionManager
      * @param CookieManagerInterface $cookieManager
+     * @param CookieMetadataFactory $cookieMetadataFactory
+     * @param Escaper $escaper
      * @param array $data
      */
     public function __construct(
         StoreManagerInterface $storeManager,
         Context $context,
-        FormKey $formKey,
+        Random $randomKey,
+        SessionManagerInterface $sessionManager,
         CookieManagerInterface $cookieManager,
+        CookieMetadataFactory $cookieMetadataFactory,
+        Escaper $escaper,
         array $data = []
     ) {
         parent::__construct($context, $data);
         $this->storeManager = $storeManager;
-        $this->formKey = $formKey;
+        $this->randomKey = $randomKey;
+        $this->sessionManager = $sessionManager;
         $this->cookieManager = $cookieManager;
+        $this->cookieMetadataFactory = $cookieMetadataFactory;
+        $this->escaper = $escaper;
     }
 
     /**
@@ -64,18 +93,56 @@ class DetectButton extends Template
      *
      * @return string
      */
-    public function getFormKey(): string
+    public function getDetectColorKey(): string
     {
-        return $this->formKey->getFormKey();
+        if (!$this->isDetectColorKeySet()) {
+            $this->setDetectColorKey();
+        }
+
+        return $this->escaper->escapeJs(
+            $this->cookieManager->getCookie(self::DETECT_COLOR_KEY, 'detect_color_key')
+        );
     }
 
     /**
-     * Returns admin auth token.
+     * Checks if the detect color key is already set.
      *
-     * @return string
+     * @return boolean
      */
-    public function getAdminAuthToken(): string
+    public function isDetectColorKeySet(): bool
     {
-        return $this->cookieManager->getCookie('admin');
+        return (bool) $this->cookieManager->getCookie(self::DETECT_COLOR_KEY);
+    }
+
+    /**
+     * Set the detect color key.
+     *
+     * @return void
+     */
+    public function setDetectColorKey(): void
+    {
+        if (!$this->isDetectColorKeySet()) {
+            $detectColorKey = $this->randomKey->getRandomString(15);
+            $this->setDetectColorKeyCookies($detectColorKey);
+        }
+    }
+
+    public function setDetectColorKeyCookies($detectColorKey)
+    {
+        $metadata = $this->cookieMetadataFactory
+            ->createPublicCookieMetadata()
+            ->setPath('/')
+            ->setHttpOnly(false)
+            ->setDomain($this->sessionManager->getCookieDomain())
+            ->setSameSite('Strict')
+            ->setSecure(true);
+
+        $this->cookieManager->setPublicCookie(
+            self::DETECT_COLOR_KEY,
+            $detectColorKey,
+            $metadata
+        );
+
+        return true;
     }
 }
