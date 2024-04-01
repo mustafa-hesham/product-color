@@ -86,6 +86,7 @@ class DetectButton extends Template
         $this->cookieManager = $cookieManager;
         $this->cookieMetadataFactory = $cookieMetadataFactory;
         $this->escaper = $escaper;
+        $this->setDetectColorKey();
     }
 
     /**
@@ -115,7 +116,7 @@ class DetectButton extends Template
     }
 
     /**
-     * Set the detect color key.
+     * Set the detect color key cookie.
      *
      * @return void
      */

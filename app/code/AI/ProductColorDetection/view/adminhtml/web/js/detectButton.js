@@ -25,7 +25,6 @@ define([
             this._super();
             this.images = [];
             this.bindCustomEvent();
-            this.detect_color_key = $.cookie("detect_color_key");
         },
 
         sendPostRequest: async function(data) {
@@ -36,6 +35,7 @@ define([
             } = window;
 
             const requestUrl = origin + this.controllerUrl;
+            const cookie = $.cookie("detect_color_key");
 
             $('body').trigger('processStart');
             const response = await fetch(requestUrl, {
@@ -46,7 +46,7 @@ define([
                 headers: {
                   "Content-Type": "application/json"
                 },
-                body: JSON.stringify({data: {image: `${data}`, form_key: `${this.detect_color_key}`}})
+                body: JSON.stringify({data: {image: `${data}`, form_key: `${cookie}`}})
               });
 
               const responseData = await response.json();
