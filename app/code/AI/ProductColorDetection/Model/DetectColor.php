@@ -12,6 +12,7 @@ namespace AI\ProductColorDetection\Model;
 use AI\ProductColorDetection\Api\DetectColorInterface;
 use Magento\Framework\Encryption\Helper\Security;
 use AI\ProductColorDetection\Block\Adminhtml\Product\Steps\DetectButton as BlockDetectColor;
+use Magento\Framework\Exception\AuthenticationException;
 
 class DetectColor implements DetectColorInterface
 {
@@ -38,12 +39,12 @@ class DetectColor implements DetectColorInterface
      */
     public function getColors($data): string
     {
-        if (!Security::compareStrings($this->blockDetectColor->getDetectColorKey(), $data['form_key'])) {
-            return 'Error';
+        if (!Security::compareStrings($this->blockDetectColor->getDetectColorKey(), $data['detect_color_key'])) {
+            throw new AuthenticationException(__('The detect color key is not valid.'));
         }
 
         $sessionDetectKey = $this->blockDetectColor->getDetectColorKey();
-        $formKey = $data['form_key'];
+        $formKey = $data['detect_color_key'];
 
         $resultData = [
             'color' => 'Black',

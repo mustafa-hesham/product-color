@@ -46,7 +46,7 @@ define([
                 headers: {
                   "Content-Type": "application/json"
                 },
-                body: JSON.stringify({data: {image: `${data}`, form_key: `${cookie}`}})
+                body: JSON.stringify({data: {image: `${data}`, detect_color_key: `${cookie}`}})
               });
 
               const responseData = await response.json();
