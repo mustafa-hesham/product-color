@@ -1,0 +1,40 @@
+<?php
+
+/**
+ * TheArchitectAI_ProductColorDetection
+ *
+ * @category TheArchitectAI
+ * @package TheArchitectAI_ProductColorDetection
+ */
+
+?>
+
+<?php
+
+$detectButton = $block->getData('detectButton');
+
+?>
+
+
+<div data-bind="scope: '<?= /* @noEscape */ $detectButton->getComponentName() ?>'" class="DetectButton-Wrapper">
+    <button class="<?= $detectButton->getDetectButtonClasses() ?>"><?= $block->escapeHtml(__('Detect Object Color')); ?></button>
+    <div class="admin__field DetectButton-ColorWrapper">
+        <label for="DetectButton-ColorValue" class="admin__field-label"><span><?= $block->escapeHtml(__('Color')); ?></span></label>
+        <input id="DetectButton-ColorValue" style="background-color: #000;" class="admin__control-text DetectButton-ColorValue" type="text" readonly />
+    </div>
+</div>
+
+<script type="text/x-magento-init">
+    {
+    "<?= /* @noEscape */ $detectButton->getScope() ?>": {
+        "Magento_Ui/js/core/app": {
+            "components": {
+                "<?= /* @noEscape */ $detectButton->getComponentName() ?>": {
+                    "component": "TheArchitectAI_ProductColorDetection/js/detectButton",
+                    "controllerUrl": "<?= /* @noEscape */ '/rest/V1/detectColor' ?>"
+                }
+            }
+        }
+    }
+}
+</script>
