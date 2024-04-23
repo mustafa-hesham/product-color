@@ -15,6 +15,7 @@ use TheArchitectAI\ProductColorDetection\Block\Adminhtml\Product\Steps\DetectBut
 use Magento\Framework\Exception\AuthenticationException;
 use Magento\Framework\Exception\LocalizedException;
 use Exception;
+use Seld\JsonLint\Undefined;
 
 class DetectColor implements DetectColorInterface
 {
@@ -45,15 +46,26 @@ class DetectColor implements DetectColorInterface
             throw new AuthenticationException(__('The detect color key is not valid.'));
         }
 
-        $imagePath = $data['image'];
-        $base64 = $this->convertImageToBase64($imagePath);
+        $imagePath = '';
+        $base64 = '';
 
-        $resultData = [
-            'color' => 'Black',
-            'imagePath' => $data['image']
-        ];
+        $response = json_encode([
+            'object_dominant_color_rgb' => null
+        ]);
 
-        return json_encode($resultData);
+        if (isset($data['image'])) {
+            $imagePath = $data['image'];
+            $base64 = $this->convertImageToBase64($imagePath);
+            $isRemoveSkin = $this->blockDetectColor->getIsRemoveSkin();
+            $response = $this->sendPostRequestToApi($base64, $isRemoveSkin);
+            $response = json_decode($response, true);
+            $objectApproxColor = $response['object_dominant_color_rgb'];
+            $hexColor = sprintf("#%02x%02x%02x", $objectApproxColor[0], $objectApproxColor[1], $objectApproxColor[2]);
+            $response['object_dominant_color_hex'] = $hexColor;
+            $response = json_encode($response);
+        }
+
+        return $response;
     }
 
 
@@ -72,6 +84,49 @@ class DetectColor implements DetectColorInterface
             return 'data:image/' . $type . ';base64,' . base64_encode($data);
         } catch (Exception $e) {
             throw new LocalizedException(__('Please provide a valid image path. Error: ' . $e->getMessage()));
+        }
+    }
+
+    /**
+     * Send the image base 64 code and isRemoveSkin parameter by a post request to API.
+     *
+     * @param string $imageBase64
+     * @param boolean $isRemoveSkin
+     * @return string|boolean
+     */
+    public function sendPostRequestToApi(string $imageBase64, bool $isRemoveSkin = true): string|bool
+    {
+        $curl = curl_init();
+
+        curl_setopt_array($curl, [
+            CURLOPT_URL => $this->blockDetectColor->getApiUrl(),
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 30,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "POST",
+            CURLOPT_POSTFIELDS => json_encode([
+                'image_base64' => $imageBase64,
+                'remove_skin' => $isRemoveSkin
+            ]),
+            CURLOPT_HTTPHEADER => [
+                "Accept-Encoding: gzip",
+                "X-RapidAPI-Host: " . $this->blockDetectColor->getApiHost(),
+                "X-RapidAPI-Key: " . $this->blockDetectColor->getApiKey(),
+                "content-type: application/json"
+            ],
+        ]);
+
+        $response = curl_exec($curl);
+        $err = curl_error($curl);
+
+        curl_close($curl);
+
+        if ($err) {
+            throw new LocalizedException(__('Error: %s', $err));
+        } else {
+            return $response;
         }
     }
 }

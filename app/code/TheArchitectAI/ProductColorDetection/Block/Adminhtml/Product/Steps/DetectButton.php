@@ -17,10 +17,16 @@ use Magento\Framework\Math\Random;
 use Magento\Framework\Stdlib\CookieManagerInterface;
 use Magento\Framework\Stdlib\Cookie\CookieMetadataFactory;
 use Magento\Framework\Escaper;
+use Magento\Framework\App\Config\ScopeConfigInterface;
 
 class DetectButton extends Template
 {
     public const DETECT_COLOR_KEY = 'detect_color_key';
+    public const SCOPE_CONFIG = 'ProductColorDetection/settings/';
+    public const API_URL_ID = 'api_url';
+    public const API_HOST_ID = 'api_host';
+    public const API_KEY_ID = 'api_key';
+    public const REMOVE_SKIN_ID = 'remove_skin';
 
     /**
      * @var Context
@@ -58,6 +64,11 @@ class DetectButton extends Template
     protected Escaper $escaper;
 
     /**
+     * @var ScopeConfigInterface
+     */
+    protected ScopeConfigInterface $scopeConfig;
+
+    /**
      * Constructor function
      *
      * @param StoreManagerInterface $storeManager
@@ -67,6 +78,7 @@ class DetectButton extends Template
      * @param CookieManagerInterface $cookieManager
      * @param CookieMetadataFactory $cookieMetadataFactory
      * @param Escaper $escaper
+     * @param ScopeConfigInterface $scopeConfig
      * @param array $data
      */
     public function __construct(
@@ -77,6 +89,7 @@ class DetectButton extends Template
         CookieManagerInterface $cookieManager,
         CookieMetadataFactory $cookieMetadataFactory,
         Escaper $escaper,
+        ScopeConfigInterface $scopeConfig,
         array $data = []
     ) {
         parent::__construct($context, $data);
@@ -86,6 +99,7 @@ class DetectButton extends Template
         $this->cookieManager = $cookieManager;
         $this->cookieMetadataFactory = $cookieMetadataFactory;
         $this->escaper = $escaper;
+        $this->scopeConfig = $scopeConfig;
         $this->setDetectColorKey();
     }
 
@@ -145,5 +159,56 @@ class DetectButton extends Template
         );
 
         return true;
+    }
+
+    /**
+     * Returns the scope configuration by field id.
+     *
+     * @param string $field_Id
+     * @return string|integer|null
+     */
+    public function getScopeConfig(string $field_Id): string|int|null
+    {
+        return $this->scopeConfig->getValue(self::SCOPE_CONFIG . $field_Id);
+    }
+
+    /**
+     * Returns the API base URL
+     *
+     * @return string
+     */
+    public function getApiUrl(): string
+    {
+        return $this->getScopeConfig(self::API_URL_ID);
+    }
+
+    /**
+     * Returns the API host URL.
+     *
+     * @return string
+     */
+    public function getApiHost(): string
+    {
+        return $this->getScopeConfig(self::API_HOST_ID);
+    }
+
+    /**
+     * Returns the API secret key.
+     *
+     * @return string
+     */
+    public function getApiKey(): string
+    {
+        return $this->getScopeConfig(self::API_KEY_ID);
+    }
+
+    /**
+     * Returns if it should remove the human model skin colors tones from image.
+     *
+     * @return boolean
+     */
+    public function getIsRemoveSkin(): bool
+    {
+        return $this->getScopeConfig(self::REMOVE_SKIN_ID);
     }
 }

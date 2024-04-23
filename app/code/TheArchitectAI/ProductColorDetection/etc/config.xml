@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * TheArchitectAI_ProductColorDetection
+ *
+ * @category TheArchitectAI
+ * @package TheArchitectAI_ProductColorDetection
+ */
+ -->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <ProductColorDetection>
+            <settings>
+                <api_url>https://product-color-detection.p.rapidapi.com/</api_url>
+                <api_host>product-color-detection.p.rapidapi.com</api_host>
+                <remove_skin>1</remove_skin>
+                <api_key backend_model="Magento\Config\Model\Config\Backend\Encrypted"></api_key>
+            </settings>
+        </ProductColorDetection>
+    </default>
+</config>

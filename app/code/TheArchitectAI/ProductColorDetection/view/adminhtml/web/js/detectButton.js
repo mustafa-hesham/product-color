@@ -27,7 +27,11 @@ define([
             this.bindCustomEvent();
         },
 
-        sendPostRequest: async function(data) {
+        getRGBColorText: function (color) {
+            return "rgb("+ color[0] +"," + color[1] + "," + color[2] + ")"
+        },
+
+        sendPostRequest: async function(image) {
             const {
                 location: {
                     origin
@@ -46,7 +50,7 @@ define([
                 headers: {
                   "Content-Type": "application/json"
                 },
-                body: JSON.stringify({data: {image: `${data}`, detect_color_key: `${cookie}`}})
+                body: JSON.stringify({data: {image: image, detect_color_key: `${cookie}`}})
               });
 
               const responseData = await response.json();
@@ -70,20 +74,19 @@ define([
                 });
 
                 self.images = imagesSources;
-                $(this).siblings(".DetectButton-ColorWrapper").find('#DetectButton-ColorValue').css({ "background-color": "#FFF" });
+
                 const {
-                    color,
-                    imagePath
+                    object_dominant_color_rgb,
+                    approximate_color_name,
+                    object_dominant_color_hex,
+                    top_colors
                 } = await self.sendPostRequest(self.images[0]);
 
-                console.log(color, imagePath);
+                $(this).siblings(".DetectButton-ColorWrapper").find('#DetectButton-ColorValue').css({ "background-color": self.getRGBColorText(object_dominant_color_rgb) });
+                $(this).siblings(".DetectButton-ColorWrapper").find('#DetectButton-ColorName').val(approximate_color_name).css('textTransform', 'capitalize');
+                $(this).siblings(".DetectButton-ColorWrapper").find('#DetectButton-ColorHex').val(object_dominant_color_hex);
+                console.log(object_dominant_color_rgb, approximate_color_name, top_colors);
             });
         },
     });
 });
-
-// $.ajax({
-//     ...// ajax setting,
-//     showLoader: true, // enable loader
-//     context: jqueryElementorSelector // element that will be coverer by loader, default body, optional
-// }).than(...)

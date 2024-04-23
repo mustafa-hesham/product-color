@@ -20,7 +20,11 @@ $detectButton = $block->getData('detectButton');
     <button class="<?= $detectButton->getDetectButtonClasses() ?>"><?= $block->escapeHtml(__('Detect Object Color')); ?></button>
     <div class="admin__field DetectButton-ColorWrapper">
         <label for="DetectButton-ColorValue" class="admin__field-label"><span><?= $block->escapeHtml(__('Color')); ?></span></label>
-        <input id="DetectButton-ColorValue" style="background-color: #000;" class="admin__control-text DetectButton-ColorValue" type="text" readonly />
+        <input id="DetectButton-ColorValue" style="background-color: #FFF;" class="admin__control-text DetectButton-ColorValue" type="text" readonly />
+        <label for="DetectButton-ColorName" class="admin__field-label"><span><?= $block->escapeHtml(__('Color Name')); ?></span></label>
+        <input id="DetectButton-ColorName" class="admin__control-text DetectButton-ColorName" type="text" readonly />
+        <label for="DetectButton-ColorHex" class="admin__field-label"><span><?= $block->escapeHtml(__('Hex')); ?></span></label>
+        <input id="DetectButton-ColorHex" class="admin__control-text DetectButton-ColorHex" type="text" readonly />
     </div>
 </div>
 
