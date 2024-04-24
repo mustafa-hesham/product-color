@@ -110,19 +110,21 @@ define([
                     object_dominant_color_rgb,
                     approximate_color_name,
                     object_dominant_color_hex,
-                    top_colors
+                    top_colors,
+                    object_closest_saved_color
                 } = await self.sendPostRequest(self.images[0]);
 
                 $(this).siblings(".DetectButton-Colors").find('#DetectButton-ColorValue').css({ "background-color": self.getRGBColorText(object_dominant_color_rgb) });
                 $(this).siblings(".DetectButton-Colors").find('#DetectButton-ColorName').val(approximate_color_name);
                 $(this).siblings(".DetectButton-Colors").find('#DetectButton-ColorHex').val(object_dominant_color_hex);
+                $(this).siblings(".DetectButton-Colors").find('#DetectButton-ClosestColor').val(object_closest_saved_color[0]);
                 $(this).siblings(".DetectButton-Colors").find('.DetectButton-TopColors').html('');
 
                 top_colors.forEach((color) => {
                     $(this).siblings(".DetectButton-Colors").find('.DetectButton-TopColors').append(self.addTopColor(color[1], color[2]))
                 });
 
-                console.log(object_dominant_color_rgb, approximate_color_name, top_colors);
+                console.log(object_closest_saved_color);
             });
         },
     });

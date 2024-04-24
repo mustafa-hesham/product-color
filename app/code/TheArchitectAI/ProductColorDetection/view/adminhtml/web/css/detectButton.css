@@ -7,7 +7,7 @@
     width: 2rem;
 }
 
-#DetectButton-ColorName {
+#DetectButton-ColorName, #DetectButton-ClosestColor {
     text-transform: capitalize;
 }
 

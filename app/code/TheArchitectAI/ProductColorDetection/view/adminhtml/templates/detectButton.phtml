@@ -25,10 +25,15 @@ $detectButton = $block->getData('detectButton');
             <label for="DetectButton-ColorName" class="admin__field-label"><span><?= $block->escapeHtml(__('Color Name')); ?></span></label>
             <div class="DetectButton-InputWrapper">
                 <input id="DetectButton-ColorName" class="admin__control-text DetectButton-ColorName" type="text" />
-                <div class="admin__field-note">Suggested color name.</div>
+                <div class="admin__field-note"><?= $block->escapeHtml(__('Suggested color name.')); ?></div>
             </div>
             <label for="DetectButton-ColorHex" class="admin__field-label"><span><?= $block->escapeHtml(__('Hex')); ?></span></label>
             <input id="DetectButton-ColorHex" class="admin__control-text DetectButton-ColorHex" type="text" readonly />
+            <label for="DetectButton-ClosestColor" class="admin__field-label"><span><?= $block->escapeHtml(__('Closest Color')); ?></span></label>
+            <div class="DetectButton-InputWrapper">
+                <input id="DetectButton-ClosestColor" class="admin__control-text DetectButton-ClosestColor" type="text" readonly />
+                <div class="admin__field-note"><?= $block->escapeHtml(__('Closest saved color by numbers.')); ?></div>
+            </div>
         </div>
         <div class="DetectButton-TopColors"></div>
     </div>
