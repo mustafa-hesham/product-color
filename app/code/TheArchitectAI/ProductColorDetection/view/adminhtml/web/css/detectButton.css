@@ -1,9 +1,35 @@
 .DetectButton {
     margin-inline-start: 1.2rem;
+    height: 33px;
 }
 
 .DetectButton-ColorValue {
     width: 2rem;
+}
+
+#DetectButton-ColorName {
+    text-transform: capitalize;
+}
+
+.DetectButton-TopColors {
+    padding-block-start: 1.2rem;
+}
+
+.DetectButton-ColorWrapper {
+    display: flex;
+
+    .admin__field-label {
+        margin-inline: 1.2rem;
+        height: 33px;
+
+        span {
+            white-space: nowrap !important;
+        }
+    }
+
+    .admin__control-text {
+        height: 33px;
+    }
 }
 
 .DetectButton-Wrapper {
@@ -11,6 +37,3 @@
     flex-wrap: wrap;
 }
 
-.admin__field-label {
-    margin-inline-start: 1.2rem;
-}
