@@ -50,9 +50,6 @@ $optionsUrl = $block->getUrl('catalog/product_attribute/createOptions');
                 "<?= /* @noEscape */ $detectButton->getComponentName() ?>": {
                     "component": "TheArchitectAI_ProductColorDetection/js/detectButton",
                     "controllerUrl": "<?= /* @noEscape */ '/rest/V1/detectColor' ?>",
-                    "optionsUrl": "<?= /* @noEscape */ $attributesUrl ?>",
-                    "createOptionsUrl": "<?= /* @noEscape */ $optionsUrl ?>",
-                    "color_attribute_id": "<?= /* @noEscape */ $block->getColorAttributeId() ?>",
                     "addColorOptionUrl": "<?= /* @noEscape */ '/rest/V1/addColorOption' ?>"
                 }
             }

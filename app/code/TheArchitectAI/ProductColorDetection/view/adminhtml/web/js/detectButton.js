@@ -74,12 +74,16 @@ define([
               return JSON.parse(responseData);
         },
 
-        addTopColor: function(colorValue, colorName) {
+        addTopColor: function(colorValue, colorName, top_colors_closest_color) {
             var html = '';
             const hexValue = this.rgbToHex(colorValue[0], colorValue[1], colorValue[2]);
             const colorNameLabel = $.mage.__('Color Name');
             const color = $.mage.__('Color');
             const colorNameComment = $.mage.__('Suggested color name.');
+            const addColorOption = $.mage.__('Add option');
+            const closestColor = $.mage.__('Closest Color');
+            const closestColorComment = $.mage.__('Closest saved color by numbers.');
+            const closestColorValue = top_colors_closest_color[0] ?? '';
 
             html += '<div class="admin__field DetectButton-ColorWrapper">';
             html += `<label for="DetectButton-ColorValue" class="admin__field-label"><span>${color}</span></label>`;
@@ -91,6 +95,12 @@ define([
             html += '</div>';
             html += '<label for="DetectButton-ColorHex" class="admin__field-label"><span>Hex</span></label>';
             html += `<input id="DetectButton-ColorHex" class="admin__control-text DetectButton-ColorHex" type="text" value="${hexValue}" readonly />`;
+            html += `<button class="DetectButton-AddOptionButton action-primary">${addColorOption}</button>`;
+            html += `<label for="DetectButton-ClosestColor" class="admin__field-label"><span>${closestColor}</span></label>`
+            html += '<div class="DetectButton-InputWrapper">';
+            html += `<input id="DetectButton-ClosestColor" class="admin__control-text DetectButton-ClosestColor" type="text" readonly value="${closestColorValue}"/>`;
+            html += `<div class="admin__field-note">${closestColorComment}</div>`;
+            html += '</div>';
             html += '</div>';
 
             return html;
@@ -145,7 +155,8 @@ define([
                     approximate_color_name,
                     object_dominant_color_hex,
                     top_colors,
-                    object_closest_saved_color
+                    object_closest_saved_color,
+                    top_colors_closest_colors
                 } = await self.sendPostRequest(self.images[0]);
 
                 $(this).siblings(".DetectButton-Colors").find('#DetectButton-ColorValue').css({ "background-color": self.getRGBColorText(object_dominant_color_rgb) });
@@ -154,11 +165,10 @@ define([
                 $(this).siblings(".DetectButton-Colors").find('#DetectButton-ClosestColor').val(object_closest_saved_color[0]);
                 $(this).siblings(".DetectButton-Colors").find('.DetectButton-TopColors').html('');
 
-                top_colors.forEach((color) => {
-                    $(this).siblings(".DetectButton-Colors").find('.DetectButton-TopColors').append(self.addTopColor(color[1], color[2]))
+                top_colors.forEach((color, index) => {
+                    $(this).siblings(".DetectButton-Colors").find('.DetectButton-TopColors')
+                        .append(self.addTopColor(color[1], color[2], top_colors_closest_colors[index]));
                 });
-
-                console.log(object_closest_saved_color);
             });
         },
 
@@ -168,7 +178,6 @@ define([
             $(document).on('click', '.DetectButton-AddOptionButton', async function() {
                 const colorName = $(this).parent().find('#DetectButton-ColorName').val();
                 const colorHex = $(this).parent().find('#DetectButton-ColorHex').val();
-                const attribute_id = parseInt(self.color_attribute_id);
 
                 if (colorName && colorHex) {
                     self.saveOption(self.capitalize(colorName), colorHex);

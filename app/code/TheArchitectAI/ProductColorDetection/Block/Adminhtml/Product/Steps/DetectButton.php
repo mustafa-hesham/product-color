@@ -152,7 +152,13 @@ class DetectButton extends StepAbstract
         }
     }
 
-    public function setDetectColorKeyCookies($detectColorKey)
+    /**
+     * Sets the detect color button key cookie.
+     *
+     * @param string $detectColorKey
+     * @return boolean
+     */
+    public function setDetectColorKeyCookies(string $detectColorKey): bool
     {
         $metadata = $this->cookieMetadataFactory
             ->createPublicCookieMetadata()

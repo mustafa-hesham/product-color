@@ -21,6 +21,8 @@ use Magento\Eav\Api\Data\AttributeOptionInterfaceFactory;
 use Magento\Eav\Api\AttributeOptionManagementInterface;
 use Magento\Catalog\Model\Product;
 use Magento\Swatches\Model\SwatchFactory;
+use Magento\Indexer\Model\IndexerFactory;
+use Magento\Catalog\Model\Indexer\Product\Eav\Processor as ProductProcessor;
 
 class ProductColorHelper extends AbstractHelper
 {
@@ -60,6 +62,11 @@ class ProductColorHelper extends AbstractHelper
     protected SwatchFactory $swatchFactory;
 
     /**
+     * @var IndexerFactory
+     */
+    protected IndexerFactory $indexerFactory;
+
+    /**
      * Constructor function
      *
      * @param AttributeRepository $attributeRepository
@@ -69,6 +76,7 @@ class ProductColorHelper extends AbstractHelper
      * @param AttributeOptionManagementInterface $attributeOptionManagement
      * @param AttributeOptionInterfaceFactory $attributeOptionInterfaceFactory
      * @param SwatchFactory $swatchFactory
+     * @param IndexerFactory $indexerFactory
      */
     public function __construct(
         AttributeRepository $attributeRepository,
@@ -77,7 +85,8 @@ class ProductColorHelper extends AbstractHelper
         AttributeOptionLabelInterfaceFactory $attributeOptionLabelFactory,
         AttributeOptionManagementInterface $attributeOptionManagement,
         AttributeOptionInterfaceFactory $attributeOptionInterfaceFactory,
-        SwatchFactory $swatchFactory
+        SwatchFactory $swatchFactory,
+        IndexerFactory $indexerFactory
     ) {
         $this->attributeRepository = $attributeRepository;
         $this->swatchCollectionFactory = $swatchCollectionFactory;
@@ -86,6 +95,7 @@ class ProductColorHelper extends AbstractHelper
         $this->attributeOptionManagement = $attributeOptionManagement;
         $this->attributeOptionInterfaceFactory = $attributeOptionInterfaceFactory;
         $this->swatchFactory = $swatchFactory;
+        $this->indexerFactory = $indexerFactory;
     }
 
     /**
@@ -116,9 +126,14 @@ class ProductColorHelper extends AbstractHelper
      * @param array $colorRgb
      * @return array
      */
-    public function getTheClosestColor(array $colorRgb, array $colors): array
+    public function getTheClosestColor(array $colorRgb): array
     {
+        $colors = $this->getColorOptions();
         $distances = [];
+
+        if (!count($colors)) {
+            return $distances;
+        }
 
         foreach ($colors as $c) {
             $squaredSum = 0;
@@ -202,10 +217,30 @@ class ProductColorHelper extends AbstractHelper
 
         try {
             $swatch->save();
+            $indexer = $this->indexerFactory->create();
+            $indexer->load(ProductProcessor::INDEXER_ID);
+            $indexer->reindexAll();
 
             return true;
         } catch (Exception $e) {
             throw new LocalizedException(__('Failed to save swatch, Error: ', $e->getMessage()));
         }
+    }
+
+    /**
+     * Gets top colors closest saved colors.
+     *
+     * @param array $topColors
+     * @return array
+     */
+    public function getTopColorsClosestColors(array $topColors): array
+    {
+        $closestTopColors = [];
+
+        foreach ($topColors as $color) {
+            array_push($closestTopColors, $this->getTheClosestColor($color[1]));
+        }
+
+        return $closestTopColors;
     }
 }

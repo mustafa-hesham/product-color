@@ -80,8 +80,8 @@ class DetectColor implements DetectColorInterface
             $objectApproxColor = $response['object_dominant_color_rgb'];
             $hexColor = sprintf("#%02x%02x%02x", $objectApproxColor[0], $objectApproxColor[1], $objectApproxColor[2]);
             $response['object_dominant_color_hex'] = $hexColor;
-            $options = $this->productColorHelper->getColorOptions();
-            $response['object_closest_saved_color'] = $this->productColorHelper->getTheClosestColor($objectApproxColor, $options);
+            $response['object_closest_saved_color'] = $this->productColorHelper->getTheClosestColor($objectApproxColor);
+            $response['top_colors_closest_colors'] = $this->productColorHelper->getTopColorsClosestColors($response['top_colors']);
             $response = json_encode($response);
         }
 
