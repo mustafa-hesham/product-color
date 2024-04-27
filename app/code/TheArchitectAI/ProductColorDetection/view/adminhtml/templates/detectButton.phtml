@@ -12,6 +12,8 @@
 <?php
 
 $detectButton = $block->getData('detectButton');
+$attributesUrl = $block->getUrl('catalog/product_attribute/getAttributes');
+$optionsUrl = $block->getUrl('catalog/product_attribute/createOptions');
 
 ?>
 
@@ -29,6 +31,7 @@ $detectButton = $block->getData('detectButton');
             </div>
             <label for="DetectButton-ColorHex" class="admin__field-label"><span><?= $block->escapeHtml(__('Hex')); ?></span></label>
             <input id="DetectButton-ColorHex" class="admin__control-text DetectButton-ColorHex" type="text" readonly />
+            <button class="DetectButton-AddOptionButton action-primary"><?= $block->escapeHtml(__('Add option')); ?></button>
             <label for="DetectButton-ClosestColor" class="admin__field-label"><span><?= $block->escapeHtml(__('Closest Color')); ?></span></label>
             <div class="DetectButton-InputWrapper">
                 <input id="DetectButton-ClosestColor" class="admin__control-text DetectButton-ClosestColor" type="text" readonly />
@@ -46,7 +49,10 @@ $detectButton = $block->getData('detectButton');
             "components": {
                 "<?= /* @noEscape */ $detectButton->getComponentName() ?>": {
                     "component": "TheArchitectAI_ProductColorDetection/js/detectButton",
-                    "controllerUrl": "<?= /* @noEscape */ '/rest/V1/detectColor' ?>"
+                    "controllerUrl": "<?= /* @noEscape */ '/rest/V1/detectColor' ?>",
+                    "optionsUrl": "<?= /* @noEscape */ $attributesUrl ?>",
+                    "createOptionsUrl": "<?= /* @noEscape */ $optionsUrl ?>",
+                    "color_attribute_id": "<?= /* @noEscape */ $block->getColorAttributeId() ?>"
                 }
             }
         }

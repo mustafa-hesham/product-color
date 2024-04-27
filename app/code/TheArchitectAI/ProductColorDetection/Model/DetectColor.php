@@ -17,6 +17,7 @@ use Magento\Framework\Exception\LocalizedException;
 use Exception;
 use Magento\Catalog\Model\Product\Attribute\Repository as AttributeRepository;
 use Magento\Swatches\Model\ResourceModel\Swatch\CollectionFactory as SwatchCollectionFactory;
+use Magento\Framework\Message\ManagerInterface as MessageManager;
 
 class DetectColor implements DetectColorInterface
 {
@@ -36,19 +37,28 @@ class DetectColor implements DetectColorInterface
     protected SwatchCollectionFactory $swatchCollectionFactory;
 
     /**
+     * @var MessageManager
+     */
+    protected MessageManager $messageManager;
+
+    /**
      * Constructor function
      *
      * @param BlockDetectColor $blockDetectColor
      * @param AttributeRepository $attributeRepository
+     * @param SwatchCollectionFactory $swatchCollectionFactory
+     * @param MessageManager $messageManager
      */
     public function __construct(
         BlockDetectColor $blockDetectColor,
         AttributeRepository $attributeRepository,
-        SwatchCollectionFactory $swatchCollectionFactory
+        SwatchCollectionFactory $swatchCollectionFactory,
+        MessageManager $messageManager
     ) {
         $this->blockDetectColor = $blockDetectColor;
         $this->attributeRepository = $attributeRepository;
         $this->swatchCollectionFactory = $swatchCollectionFactory;
+        $this->messageManager = $messageManager;
     }
 
     /**
@@ -79,7 +89,8 @@ class DetectColor implements DetectColorInterface
             $objectApproxColor = $response['object_dominant_color_rgb'];
             $hexColor = sprintf("#%02x%02x%02x", $objectApproxColor[0], $objectApproxColor[1], $objectApproxColor[2]);
             $response['object_dominant_color_hex'] = $hexColor;
-            $response['object_closest_saved_color'] = $this->getTheClosestColor($objectApproxColor);
+            $options = $this->getColorOptions();
+            $response['object_closest_saved_color'] = $this->getTheClosestColor($objectApproxColor, $options);
             $response = json_encode($response);
         }
 
@@ -156,7 +167,7 @@ class DetectColor implements DetectColorInterface
     public function getColorOptions(): array
     {
         $colors = [];
-        $options = $this->attributeRepository->get('color')->getOptions();
+        $options = $this->attributeRepository->get(BlockDetectColor::ATTRIBUTE_CODE)->getOptions();
 
         foreach ($options as $option) {
             if (ctype_alpha($option->getLabel())) {
@@ -176,10 +187,9 @@ class DetectColor implements DetectColorInterface
      * @param array $colorRgb
      * @return array
      */
-    public function getTheClosestColor(array $colorRgb): array
+    public function getTheClosestColor(array $colorRgb, array $colors): array
     {
         $distances = [];
-        $colors = $this->getColorOptions();
 
         foreach ($colors as $c) {
             $squaredSum = 0;

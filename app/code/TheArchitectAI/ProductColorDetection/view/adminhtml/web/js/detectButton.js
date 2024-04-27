@@ -13,10 +13,11 @@ define([
     'Magento_Ui/js/lib/collapsible',
     'mage/template',
     'Magento_Ui/js/modal/alert',
+    'mageUtils',
     'Magento_Catalog/js/product-gallery',
     'jquery/file-uploader',
     'mage/translate'
-], function (Component, $, ko, _, Collapsible, mageTemplate, alert) {
+], function (Component, $, ko, _, Collapsible, mageTemplate, alert, utils) {
     'use strict';
 
     return Component.extend({
@@ -25,6 +26,7 @@ define([
             this._super();
             this.images = [];
             this.bindCustomEvent();
+            this.addNewColorOptions();
         },
 
         componentToHex: function(c) {
@@ -38,6 +40,17 @@ define([
 
         rgbToHex: function(r, g, b) {
             return "#" + this.componentToHex(r) + this.componentToHex(g) + this.componentToHex(b);
+        },
+
+        saveOption: function(newOptions) {
+            $.ajax({
+                type: 'POST',
+                url: this.createOptionsUrl,
+                data: {
+                    options: newOptions
+                },
+                showLoader: true
+            });
         },
 
         addTopColor: function(colorValue, colorName) {
@@ -125,6 +138,29 @@ define([
                 });
 
                 console.log(object_closest_saved_color);
+            });
+        },
+
+        addNewColorOptions: function() {
+            self = this;
+
+            $(document).on('click', '.DetectButton-AddOptionButton', async function() {
+                const colorName = $(this).parent().find('#DetectButton-ColorName').val();
+                const colorHex = $(this).parent().find('#DetectButton-ColorHex').val();
+                const attribute_id = parseInt(self.color_attribute_id);
+                const option = {
+                    value: colorHex,
+                    label: colorName,
+                    id: utils.uniqueid(),
+                    'attribute_id': attribute_id,
+                    'is_new': true
+                };
+
+                console.log('HHH', option);
+
+                if (colorName && colorHex) {
+                    self.saveOption([option]);
+                }
             });
         },
     });

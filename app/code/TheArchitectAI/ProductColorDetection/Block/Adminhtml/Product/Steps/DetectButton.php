@@ -10,7 +10,6 @@
 namespace TheArchitectAI\ProductColorDetection\Block\Adminhtml\Product\Steps;
 
 use Magento\Store\Model\StoreManagerInterface;
-use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Element\Template\Context;
 use Magento\Framework\Session\SessionManagerInterface;
 use Magento\Framework\Math\Random;
@@ -18,10 +17,13 @@ use Magento\Framework\Stdlib\CookieManagerInterface;
 use Magento\Framework\Stdlib\Cookie\CookieMetadataFactory;
 use Magento\Framework\Escaper;
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Ui\Block\Component\StepsWizard\StepAbstract;
+use Magento\Catalog\Model\Product\Attribute\Repository as AttributeRepository;
 
-class DetectButton extends Template
+class DetectButton extends StepAbstract
 {
     public const DETECT_COLOR_KEY = 'detect_color_key';
+    public const ATTRIBUTE_CODE = 'color';
     public const SCOPE_CONFIG = 'ProductColorDetection/settings/';
     public const API_URL_ID = 'api_url';
     public const API_HOST_ID = 'api_host';
@@ -69,6 +71,11 @@ class DetectButton extends Template
     protected ScopeConfigInterface $scopeConfig;
 
     /**
+     * @var AttributeRepository
+     */
+    protected AttributeRepository $attributeRepository;
+
+    /**
      * Constructor function
      *
      * @param StoreManagerInterface $storeManager
@@ -79,6 +86,7 @@ class DetectButton extends Template
      * @param CookieMetadataFactory $cookieMetadataFactory
      * @param Escaper $escaper
      * @param ScopeConfigInterface $scopeConfig
+     * @param AttributeRepository $attributeRepository
      * @param array $data
      */
     public function __construct(
@@ -90,6 +98,7 @@ class DetectButton extends Template
         CookieMetadataFactory $cookieMetadataFactory,
         Escaper $escaper,
         ScopeConfigInterface $scopeConfig,
+        AttributeRepository $attributeRepository,
         array $data = []
     ) {
         parent::__construct($context, $data);
@@ -100,6 +109,7 @@ class DetectButton extends Template
         $this->cookieMetadataFactory = $cookieMetadataFactory;
         $this->escaper = $escaper;
         $this->scopeConfig = $scopeConfig;
+        $this->attributeRepository = $attributeRepository;
         $this->setDetectColorKey();
     }
 
@@ -210,5 +220,23 @@ class DetectButton extends Template
     public function getIsRemoveSkin(): bool
     {
         return $this->getScopeConfig(self::REMOVE_SKIN_ID);
+    }
+
+    /**
+     * Get Color attribute ID.
+     *
+     * @return integer|null
+     */
+    public function getColorAttributeId(): int|null
+    {
+        return $this->attributeRepository->get(self::ATTRIBUTE_CODE)->getAttributeId();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCaption()
+    {
+        return __('Detect Object Color');
     }
 }
