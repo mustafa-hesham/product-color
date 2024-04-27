@@ -29,6 +29,10 @@ define([
             this.addNewColorOptions();
         },
 
+        capitalize: function (string) {
+            return string.charAt(0).toUpperCase() + string.slice(1);
+        },
+
         componentToHex: function(c) {
             var hex = c.toString(16);
             return hex.length == 1 ? "0" + hex : hex;
@@ -42,15 +46,32 @@ define([
             return "#" + this.componentToHex(r) + this.componentToHex(g) + this.componentToHex(b);
         },
 
-        saveOption: function(newOptions) {
-            $.ajax({
-                type: 'POST',
-                url: this.createOptionsUrl,
-                data: {
-                    options: newOptions
+        saveOption: async function(colorName, colorHex) {
+            const {
+                location: {
+                    origin
+                }
+            } = window;
+
+            const requestUrl = origin + this.addColorOptionUrl;
+            const cookie = $.cookie("detect_color_key");
+
+            $('body').trigger('processStart');
+            const response = await fetch(requestUrl, {
+                method: "POST",
+                mode: "cors",
+                cache: "no-cache",
+                credentials: "same-origin",
+                headers: {
+                  "Content-Type": "application/json"
                 },
-                showLoader: true
-            });
+                body: JSON.stringify({data: {colorName: colorName, colorHex: colorHex,  detect_color_key: `${cookie}`}})
+              });
+
+              const responseData = await response.json();
+              $('body').trigger('processStop');
+
+              return JSON.parse(responseData);
         },
 
         addTopColor: function(colorValue, colorName) {
@@ -148,18 +169,9 @@ define([
                 const colorName = $(this).parent().find('#DetectButton-ColorName').val();
                 const colorHex = $(this).parent().find('#DetectButton-ColorHex').val();
                 const attribute_id = parseInt(self.color_attribute_id);
-                const option = {
-                    value: colorHex,
-                    label: colorName,
-                    id: utils.uniqueid(),
-                    'attribute_id': attribute_id,
-                    'is_new': true
-                };
-
-                console.log('HHH', option);
 
                 if (colorName && colorHex) {
-                    self.saveOption([option]);
+                    self.saveOption(self.capitalize(colorName), colorHex);
                 }
             });
         },

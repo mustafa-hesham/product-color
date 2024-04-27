@@ -18,4 +18,12 @@ interface DetectColorInterface
      * @return string
      */
     public function getColors($data): string;
+
+    /**
+     * Adds new color attribute option
+     *
+     * @param mixed $data
+     * @return string
+     */
+    public function addColorOption($data): string;
 }

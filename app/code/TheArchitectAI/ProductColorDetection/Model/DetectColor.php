@@ -15,9 +15,8 @@ use TheArchitectAI\ProductColorDetection\Block\Adminhtml\Product\Steps\DetectBut
 use Magento\Framework\Exception\AuthenticationException;
 use Magento\Framework\Exception\LocalizedException;
 use Exception;
-use Magento\Catalog\Model\Product\Attribute\Repository as AttributeRepository;
-use Magento\Swatches\Model\ResourceModel\Swatch\CollectionFactory as SwatchCollectionFactory;
 use Magento\Framework\Message\ManagerInterface as MessageManager;
+use TheArchitectAI\ProductColorDetection\Helper\ProductColorHelper;
 
 class DetectColor implements DetectColorInterface
 {
@@ -27,38 +26,30 @@ class DetectColor implements DetectColorInterface
     protected BlockDetectColor $blockDetectColor;
 
     /**
-     * @var AttributeRepository
-     */
-    protected AttributeRepository $attributeRepository;
-
-    /**
-     * @var SwatchCollectionFactory
-     */
-    protected SwatchCollectionFactory $swatchCollectionFactory;
-
-    /**
      * @var MessageManager
      */
     protected MessageManager $messageManager;
 
     /**
+     * @var ProductColorHelper
+     */
+    protected ProductColorHelper $productColorHelper;
+
+    /**
      * Constructor function
      *
      * @param BlockDetectColor $blockDetectColor
-     * @param AttributeRepository $attributeRepository
-     * @param SwatchCollectionFactory $swatchCollectionFactory
      * @param MessageManager $messageManager
+     * @param ProductColorHelper $productColorHelper
      */
     public function __construct(
         BlockDetectColor $blockDetectColor,
-        AttributeRepository $attributeRepository,
-        SwatchCollectionFactory $swatchCollectionFactory,
+        ProductColorHelper $productColorHelper,
         MessageManager $messageManager
     ) {
         $this->blockDetectColor = $blockDetectColor;
-        $this->attributeRepository = $attributeRepository;
-        $this->swatchCollectionFactory = $swatchCollectionFactory;
         $this->messageManager = $messageManager;
+        $this->productColorHelper = $productColorHelper;
     }
 
     /**
@@ -89,12 +80,46 @@ class DetectColor implements DetectColorInterface
             $objectApproxColor = $response['object_dominant_color_rgb'];
             $hexColor = sprintf("#%02x%02x%02x", $objectApproxColor[0], $objectApproxColor[1], $objectApproxColor[2]);
             $response['object_dominant_color_hex'] = $hexColor;
-            $options = $this->getColorOptions();
-            $response['object_closest_saved_color'] = $this->getTheClosestColor($objectApproxColor, $options);
+            $options = $this->productColorHelper->getColorOptions();
+            $response['object_closest_saved_color'] = $this->productColorHelper->getTheClosestColor($objectApproxColor, $options);
             $response = json_encode($response);
         }
 
         return $response;
+    }
+
+    /**
+     * Adds new color attribute option
+     *
+     * @param mixed $data
+     * @return string
+     */
+    public function addColorOption($data): string
+    {
+        if (!Security::compareStrings($this->blockDetectColor->getDetectColorKey(), $data['detect_color_key'])) {
+            throw new AuthenticationException(__('The detect color key is not valid.'));
+        }
+
+        $isOptionAdded = false;
+
+        if (isset($data['colorName'])) {
+            if ($this->productColorHelper->isOptionExists($data['colorName'])) {
+                $this->messageManager->addErrorMessage(__('Option with the same label already exists'));
+                throw new LocalizedException(__('Option with the same label already exists'));
+            }
+
+            $colorName =  $data['colorName'];
+            $colorHex = $data['colorHex'];
+            $isOptionAdded = $this->productColorHelper->addNewColorOption($colorName, $colorHex);
+
+            return json_encode([
+                'is_added' => $isOptionAdded
+            ]);
+        }
+
+        return json_encode([
+            'is_added' => $isOptionAdded
+        ]);
     }
 
 
@@ -157,51 +182,5 @@ class DetectColor implements DetectColorInterface
         } else {
             return $response;
         }
-    }
-
-    /**
-     * Return all colors options.
-     *
-     * @return array
-     */
-    public function getColorOptions(): array
-    {
-        $colors = [];
-        $options = $this->attributeRepository->get(BlockDetectColor::ATTRIBUTE_CODE)->getOptions();
-
-        foreach ($options as $option) {
-            if (ctype_alpha($option->getLabel())) {
-                $swatchCollection = $this->swatchCollectionFactory->create();
-                $hexColor = $swatchCollection->addFieldToFilter('option_id', intval($option->getValue()))->load()->getFirstItem()->getValue();
-                list($r, $g, $b) = sscanf($hexColor, "#%02x%02x%02x");
-                array_push($colors, [$option->getLabel(), $hexColor, [$r, $g, $b]]);
-            }
-        }
-
-        return $colors;
-    }
-
-    /**
-     * Returns the closest saved color.
-     *
-     * @param array $colorRgb
-     * @return array
-     */
-    public function getTheClosestColor(array $colorRgb, array $colors): array
-    {
-        $distances = [];
-
-        foreach ($colors as $c) {
-            $squaredSum = 0;
-            foreach ($c[2] as $i => $value) {
-                $squaredSum += pow(($value - $colorRgb[$i]), 2);
-            }
-            $distance = sqrt($squaredSum);
-            $distances[] = $distance;
-        }
-
-        $index_of_smallest = array_keys($distances, min($distances));
-
-        return $colors[$index_of_smallest[0]];
     }
 }

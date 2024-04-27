@@ -15,4 +15,10 @@
             <resource ref="anonymous"/>
         </resources>
     </route>
+    <route url="/V1/addColorOption" method="POST">
+        <service class="TheArchitectAI\ProductColorDetection\Api\DetectColorInterface" method="addColorOption"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
 </routes>
