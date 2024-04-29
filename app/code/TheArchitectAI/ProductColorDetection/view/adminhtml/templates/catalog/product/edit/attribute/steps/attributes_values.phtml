@@ -35,7 +35,7 @@ $optionsUrl = $block->getUrl('catalog/product_attribute/createOptions');
                         ); ?>)
                     </div>
                 </div>
-                <button data-bind="click: $parent.refreshOptions" class="DetectButton-AddOptionButton action-primary"><?= $block->escapeHtml(__('Refresh options')); ?></button>
+                <button data-bind="visible: $parent.isColorAttribute, click: $parent.refreshOptions" class="DetectButton-AddOptionButton action-primary"><?= $block->escapeHtml(__('Refresh options')); ?></button>
                 <div class="attribute-entity-actions">
                     <button type="button" class="action-select-all action-tertiary" data-bind="click: $parent.selectAllAttributes" title="<?= $block->escapeHtml(__('Select All')) ?>">
                         <span><?= $block->escapeHtml(

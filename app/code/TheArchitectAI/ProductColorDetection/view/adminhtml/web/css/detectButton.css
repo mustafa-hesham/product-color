@@ -37,3 +37,10 @@
     flex-wrap: wrap;
 }
 
+.DetectButton-SuccessMessage, .DetectButton-BulkSuccessMessage, .DetectButton-ErrorMessage {
+    display: none;
+}
+
+.DetectButton-SuccessMessage, .DetectButton-BulkSuccessMessage {
+    margin-block-end: 2rem;
+}

@@ -13,10 +13,6 @@ define([
     'use strict';
 
     return Component.extend({
-        initialize: function () {
-            this._super();
-        },
-
         refreshOptions: async function() {
             const {
                 location: {
@@ -43,9 +39,23 @@ define([
             const responseData = await response.json();
             $('body').trigger('processStop');
 
+            const oldOptions = this.options();
             const options =  JSON.parse(responseData);
-            const mappedOptions = options.map((option) => { return {...option, id: utils.uniqueid()}});
-            this.options(mappedOptions);
+            const newOptions = [];
+
+            options.forEach((option) => {
+                if (!oldOptions.some((oldOption) => oldOption.label === option.label)) {
+                    newOptions.push(option);
+                }
+            });
+
+            const mappedOptions = newOptions.map((option) => { return {...option, id: utils.uniqueid()}});
+            const mergedOptions = [...oldOptions, ...mappedOptions];
+            this.options(mergedOptions);
         },
+
+        isColorAttribute: function() {
+            return this.code === 'color';
+        }
     })
 });

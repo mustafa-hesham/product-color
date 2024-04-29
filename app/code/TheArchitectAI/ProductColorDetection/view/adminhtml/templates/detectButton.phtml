@@ -17,28 +17,42 @@ $optionsUrl = $block->getUrl('catalog/product_attribute/createOptions');
 
 ?>
 
-
-<div data-bind="scope: '<?= /* @noEscape */ $detectButton->getComponentName() ?>'" class="DetectButton-Wrapper">
-    <button class="<?= $detectButton->getDetectButtonClasses() ?>"><?= $block->escapeHtml(__('Detect Object Color')); ?></button>
-    <div class="DetectButton-Colors">
-        <div class="admin__field DetectButton-ColorWrapper">
-            <label for="DetectButton-ColorValue" class="admin__field-label"><span><?= $block->escapeHtml(__('Color')); ?></span></label>
-            <input id="DetectButton-ColorValue" style="background-color: #FFF;" class="admin__control-text DetectButton-ColorValue" type="text" readonly />
-            <label for="DetectButton-ColorName" class="admin__field-label"><span><?= $block->escapeHtml(__('Color Name')); ?></span></label>
-            <div class="DetectButton-InputWrapper">
-                <input id="DetectButton-ColorName" class="admin__control-text DetectButton-ColorName" type="text" />
-                <div class="admin__field-note"><?= $block->escapeHtml(__('Suggested color name.')); ?></div>
+<div data-bind="scope: '<?= /* @noEscape */ $detectButton->getComponentName() ?>'">
+    <div class="DetectButton-Message">
+        <div class="messages">
+            <div class="message message-success success DetectButton-SuccessMessage">
+                <div class="DetectButton-SuccessMessageText"><?= $block->escapeHtml(__('Color option is added successfully.')); ?></div>
             </div>
-            <label for="DetectButton-ColorHex" class="admin__field-label"><span><?= $block->escapeHtml(__('Hex')); ?></span></label>
-            <input id="DetectButton-ColorHex" class="admin__control-text DetectButton-ColorHex" type="text" readonly />
-            <button class="DetectButton-AddOptionButton action-primary"><?= $block->escapeHtml(__('Add option')); ?></button>
-            <label for="DetectButton-ClosestColor" class="admin__field-label"><span><?= $block->escapeHtml(__('Closest Color')); ?></span></label>
-            <div class="DetectButton-InputWrapper">
-                <input id="DetectButton-ClosestColor" class="admin__control-text DetectButton-ClosestColor" type="text" readonly />
-                <div class="admin__field-note"><?= $block->escapeHtml(__('Closest saved color by numbers.')); ?></div>
+            <div class="message message-success success DetectButton-BulkSuccessMessage">
+                <div class="DetectButton-SuccessMessageText"><?= $block->escapeHtml(__('Color option is added successfully. Please go back and select the new option.')); ?></div>
+            </div>
+            <div class="message message-error error DetectButton-ErrorMessage">
+                <div class="DetectButton-ErrorMessageText"><?= $block->escapeHtml(__('Option with the same label already exists.')); ?></div>
             </div>
         </div>
-        <div class="DetectButton-TopColors"></div>
+    </div>
+    <div class="DetectButton-Wrapper">
+        <button class="<?= $detectButton->getDetectButtonClasses() ?>"><?= $block->escapeHtml(__('Detect Object Color')); ?></button>
+        <div class="DetectButton-Colors">
+            <div class="admin__field DetectButton-ColorWrapper">
+                <label for="DetectButton-ColorValue" class="admin__field-label"><span><?= $block->escapeHtml(__('Color')); ?></span></label>
+                <input id="DetectButton-ColorValue" style="background-color: #FFF;" class="admin__control-text DetectButton-ColorValue" type="text" readonly />
+                <label for="DetectButton-ColorName" class="admin__field-label"><span><?= $block->escapeHtml(__('Color Name')); ?></span></label>
+                <div class="DetectButton-InputWrapper">
+                    <input id="DetectButton-ColorName" class="admin__control-text DetectButton-ColorName" type="text" />
+                    <div class="admin__field-note"><?= $block->escapeHtml(__('Suggested color name.')); ?></div>
+                </div>
+                <label for="DetectButton-ColorHex" class="admin__field-label"><span><?= $block->escapeHtml(__('Hex')); ?></span></label>
+                <input id="DetectButton-ColorHex" class="admin__control-text DetectButton-ColorHex" type="text" readonly />
+                <button class="DetectButton-AddOptionButton action-primary"><?= $block->escapeHtml(__('Add option')); ?></button>
+                <label for="DetectButton-ClosestColor" class="admin__field-label"><span><?= $block->escapeHtml(__('Closest Color')); ?></span></label>
+                <div class="DetectButton-InputWrapper">
+                    <input id="DetectButton-ClosestColor" class="admin__control-text DetectButton-ClosestColor" type="text" readonly />
+                    <div class="admin__field-note"><?= $block->escapeHtml(__('Closest saved color by numbers.')); ?></div>
+                </div>
+            </div>
+            <div class="DetectButton-TopColors"></div>
+        </div>
     </div>
 </div>
 

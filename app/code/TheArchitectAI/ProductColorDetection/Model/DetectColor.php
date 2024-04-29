@@ -15,7 +15,6 @@ use TheArchitectAI\ProductColorDetection\Block\Adminhtml\Product\Steps\DetectBut
 use Magento\Framework\Exception\AuthenticationException;
 use Magento\Framework\Exception\LocalizedException;
 use Exception;
-use Magento\Framework\Message\ManagerInterface as MessageManager;
 use TheArchitectAI\ProductColorDetection\Helper\ProductColorHelper;
 
 class DetectColor implements DetectColorInterface
@@ -26,11 +25,6 @@ class DetectColor implements DetectColorInterface
     protected BlockDetectColor $blockDetectColor;
 
     /**
-     * @var MessageManager
-     */
-    protected MessageManager $messageManager;
-
-    /**
      * @var ProductColorHelper
      */
     protected ProductColorHelper $productColorHelper;
@@ -39,16 +33,13 @@ class DetectColor implements DetectColorInterface
      * Constructor function
      *
      * @param BlockDetectColor $blockDetectColor
-     * @param MessageManager $messageManager
      * @param ProductColorHelper $productColorHelper
      */
     public function __construct(
         BlockDetectColor $blockDetectColor,
-        ProductColorHelper $productColorHelper,
-        MessageManager $messageManager
+        ProductColorHelper $productColorHelper
     ) {
         $this->blockDetectColor = $blockDetectColor;
-        $this->messageManager = $messageManager;
         $this->productColorHelper = $productColorHelper;
     }
 
@@ -104,8 +95,9 @@ class DetectColor implements DetectColorInterface
 
         if (isset($data['colorName'])) {
             if ($this->productColorHelper->isOptionExists($data['colorName'])) {
-                $this->messageManager->addErrorMessage(__('Option with the same label already exists'));
-                throw new LocalizedException(__('Option with the same label already exists'));
+                return json_encode([
+                    'is_added' => $isOptionAdded
+                ]);
             }
 
             $colorName =  $data['colorName'];

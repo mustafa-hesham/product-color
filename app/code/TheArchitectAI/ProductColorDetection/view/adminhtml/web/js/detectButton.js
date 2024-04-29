@@ -8,16 +8,8 @@
 define([
     'uiComponent',
     'jquery',
-    'ko',
-    'underscore',
-    'Magento_Ui/js/lib/collapsible',
-    'mage/template',
-    'Magento_Ui/js/modal/alert',
-    'mageUtils',
-    'Magento_Catalog/js/product-gallery',
-    'jquery/file-uploader',
-    'mage/translate'
-], function (Component, $, ko, _, Collapsible, mageTemplate, alert, utils) {
+    'underscore'
+], function (Component, $, _) {
     'use strict';
 
     return Component.extend({
@@ -141,7 +133,7 @@ define([
                 const imagesSources = [];
                 self.images = [];
 
-                $(this).parent().siblings(".gallery").find('.product-image').each(function() {
+                $(this).parent().parent().siblings(".gallery").find('.product-image').each(function() {
                     const imgSrc = $(this).attr("src");
                     if ($(this).parent().is(":visible")) {
                         imagesSources.push(imgSrc);
@@ -172,15 +164,28 @@ define([
             });
         },
 
-        addNewColorOptions: function() {
+        addNewColorOptions: async function() {
             self = this;
 
             $(document).on('click', '.DetectButton-AddOptionButton', async function() {
                 const colorName = $(this).parent().find('#DetectButton-ColorName').val();
                 const colorHex = $(this).parent().find('#DetectButton-ColorHex').val();
+                $(this).parents().children('.DetectButton-Message')
+                    .find('.DetectButton-SuccessMessage, .DetectButton-ErrorMessage, .DetectButton-BulkSuccessMessage')
+                    .css({"display": "none"});
 
                 if (colorName && colorHex) {
-                    self.saveOption(self.capitalize(colorName), colorHex);
+                    const {
+                        is_added
+                    } = await self.saveOption(self.capitalize(colorName), colorHex);
+
+                    if(is_added && !$('.steps-wizard-title').html()) {
+                        $(this).parents().children('.DetectButton-Message').find('.DetectButton-SuccessMessage').css({"display": "block"});
+                    } else if (is_added && $('.steps-wizard-title').html()) {
+                        $(this).parents().children('.DetectButton-Message').find('.DetectButton-BulkSuccessMessage').css({"display": "block"});
+                    } else {
+                        $(this).parents().children('.DetectButton-Message').find('.DetectButton-ErrorMessage').css({"display": "block"});
+                    }
                 }
             });
         },

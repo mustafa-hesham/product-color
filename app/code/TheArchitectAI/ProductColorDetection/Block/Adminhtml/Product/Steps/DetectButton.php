@@ -30,6 +30,8 @@ class DetectButton extends StepAbstract
     public const API_KEY_ID = 'api_key';
     public const REMOVE_SKIN_ID = 'remove_skin';
 
+    protected $successMessage = '';
+
     /**
      * @var Context
      */
