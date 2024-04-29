@@ -243,4 +243,14 @@ class ProductColorHelper extends AbstractHelper
 
         return $closestTopColors;
     }
+
+    /**
+     * Return options of the color attribute.
+     *
+     * @return array|null
+     */
+    public function getRawColorOptions(): array|null
+    {
+        return $this->attributeRepository->get(BlockDetectColor::ATTRIBUTE_CODE)->getOptions();
+    }
 }

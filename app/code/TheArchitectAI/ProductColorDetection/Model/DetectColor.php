@@ -122,6 +122,38 @@ class DetectColor implements DetectColorInterface
         ]);
     }
 
+    /**
+     * Gets the color options.
+     *
+     * @param mixed $data
+     * @return string
+     */
+    public function getColorOptions($data): string
+    {
+        if (!Security::compareStrings($this->blockDetectColor->getDetectColorKey(), $data['detect_color_key'])) {
+            throw new AuthenticationException(__('The detect color key is not valid.'));
+        }
+
+        $options = $this->productColorHelper->getRawColorOptions();
+        $formattedOptions = [];
+
+        if ($options) {
+            foreach ($options as $option) {
+                if (ctype_alpha($option->getLabel())) {
+                    array_push(
+                        $formattedOptions,
+                        [
+                            'value' => $option->getValue(),
+                            'label' => $option->getLabel()
+                        ]
+                    );
+                }
+            }
+        }
+
+        return json_encode($formattedOptions);
+    }
+
 
     /**
      * Converts image to base64 encoding.
