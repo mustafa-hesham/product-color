@@ -26,6 +26,8 @@ use Magento\Catalog\Model\Indexer\Product\Eav\Processor as ProductProcessor;
 
 class ProductColorHelper extends AbstractHelper
 {
+    public const OPTION_LABEL_REGEX = '/^[A-Za-z][A-Za-z-\s]+$/D';
+
     /**
      * @var AttributeRepository
      */
@@ -109,7 +111,7 @@ class ProductColorHelper extends AbstractHelper
         $options = $this->attributeRepository->get(BlockDetectColor::ATTRIBUTE_CODE)->getOptions();
 
         foreach ($options as $option) {
-            if (ctype_alpha($option->getLabel())) {
+            if (preg_match(self::OPTION_LABEL_REGEX, $option->getLabel())) {
                 $swatchCollection = $this->swatchCollectionFactory->create();
                 $hexColor = $swatchCollection->addFieldToFilter('option_id', intval($option->getValue()))->load()->getFirstItem()->getValue();
                 list($r, $g, $b) = sscanf($hexColor, "#%02x%02x%02x");

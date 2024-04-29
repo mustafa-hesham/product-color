@@ -131,7 +131,7 @@ class DetectColor implements DetectColorInterface
 
         if ($options) {
             foreach ($options as $option) {
-                if (ctype_alpha($option->getLabel())) {
+                if (preg_match(ProductColorHelper::OPTION_LABEL_REGEX, $option->getLabel())) {
                     array_push(
                         $formattedOptions,
                         [
