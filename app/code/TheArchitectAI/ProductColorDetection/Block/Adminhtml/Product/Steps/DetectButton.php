@@ -227,7 +227,7 @@ class DetectButton extends StepAbstract
      */
     public function getIsRemoveSkin(): bool
     {
-        return $this->getScopeConfig(self::REMOVE_SKIN_ID);
+        return (int)$this->getScopeConfig(self::REMOVE_SKIN_ID);
     }
 
     /**

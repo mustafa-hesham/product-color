@@ -98,7 +98,7 @@ define([
             return html;
         },
 
-        sendPostRequest: async function(image) {
+        sendPostRequest: async function(image, isRemoveSkin) {
             const {
                 location: {
                     origin
@@ -117,7 +117,7 @@ define([
                 headers: {
                   "Content-Type": "application/json"
                 },
-                body: JSON.stringify({data: {image: image, detect_color_key: `${cookie}`}})
+                body: JSON.stringify({data: {image: image, detect_color_key: `${cookie}`, isRemoveSkin: isRemoveSkin}})
               });
 
               const responseData = await response.json();
@@ -133,7 +133,7 @@ define([
                 const imagesSources = [];
                 self.images = [];
 
-                $(this).parent().parent().siblings(".gallery").find('.product-image').each(function() {
+                $(this).parents().children(".gallery").find('.product-image').each(function() {
                     const imgSrc = $(this).attr("src");
                     if ($(this).parent().is(":visible")) {
                         imagesSources.push(imgSrc);
@@ -142,6 +142,8 @@ define([
 
                 self.images = imagesSources;
 
+                const isRemoveSkin = $(this).siblings(".DetectButton-RemoveSkin").find('.DetectButton-RemoveSkinCheckBox')[0].checked;
+
                 const {
                     object_dominant_color_rgb,
                     approximate_color_name,
@@ -149,7 +151,7 @@ define([
                     top_colors,
                     object_closest_saved_color,
                     top_colors_closest_colors
-                } = await self.sendPostRequest(self.images[0]);
+                } = await self.sendPostRequest(self.images[0], isRemoveSkin);
 
                 $(this).siblings(".DetectButton-Colors").find('#DetectButton-ColorValue').css({ "background-color": self.getRGBColorText(object_dominant_color_rgb) });
                 $(this).siblings(".DetectButton-Colors").find('#DetectButton-ColorName').val(approximate_color_name);

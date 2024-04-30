@@ -14,6 +14,7 @@
 $detectButton = $block->getData('detectButton');
 $attributesUrl = $block->getUrl('catalog/product_attribute/getAttributes');
 $optionsUrl = $block->getUrl('catalog/product_attribute/createOptions');
+$isRemoveSkin = $block->getIsRemoveSkin() ? 'checked' : '';
 
 ?>
 
@@ -33,6 +34,10 @@ $optionsUrl = $block->getUrl('catalog/product_attribute/createOptions');
     </div>
     <div class="DetectButton-Wrapper">
         <button class="<?= $detectButton->getDetectButtonClasses() ?>"><?= $block->escapeHtml(__('Detect Object Color')); ?></button>
+        <div class="admin__field admin__field-option DetectButton-RemoveSkin">
+            <input type="checkbox" class="admin__control-checkbox DetectButton-RemoveSkinCheckBox" name="DetectButton-RemoveSkinCheckBox" <?= $isRemoveSkin; ?>>
+            <label class="admin__field-label" for="DetectButton-RemoveSkinCheckBox"><?= $block->escapeHtml(__('Remove skin')); ?></label>
+        </div>
         <div class="DetectButton-Colors">
             <div class="admin__field DetectButton-ColorWrapper">
                 <label for="DetectButton-ColorValue" class="admin__field-label"><span><?= $block->escapeHtml(__('Color')); ?></span></label>

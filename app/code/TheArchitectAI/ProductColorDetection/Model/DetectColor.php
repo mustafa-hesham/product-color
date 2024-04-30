@@ -65,7 +65,7 @@ class DetectColor implements DetectColorInterface
         if (isset($data['image'])) {
             $imagePath = $data['image'];
             $base64 = $this->convertImageToBase64($imagePath);
-            $isRemoveSkin = $this->blockDetectColor->getIsRemoveSkin();
+            $isRemoveSkin = $data['isRemoveSkin'];
             $response = $this->sendPostRequestToApi($base64, $isRemoveSkin);
             $response = json_decode($response, true);
             $objectApproxColor = $response['object_dominant_color_rgb'];
