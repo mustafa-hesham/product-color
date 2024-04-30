@@ -93,6 +93,7 @@ define([
             html += `<input id="DetectButton-ClosestColor" class="admin__control-text DetectButton-ClosestColor" type="text" readonly value="${closestColorValue}"/>`;
             html += `<div class="admin__field-note">${closestColorComment}</div>`;
             html += '</div>';
+            html += `<input id="DetectButton-ClosestColorValue" style="background-color: ${top_colors_closest_color[1]};" class="admin__control-text DetectButton-ColorValue" type="text" readonly />`
             html += '</div>';
 
             return html;
@@ -157,6 +158,7 @@ define([
                 $(this).siblings(".DetectButton-Colors").find('#DetectButton-ColorName').val(approximate_color_name);
                 $(this).siblings(".DetectButton-Colors").find('#DetectButton-ColorHex').val(object_dominant_color_hex);
                 $(this).siblings(".DetectButton-Colors").find('#DetectButton-ClosestColor').val(object_closest_saved_color[0]);
+                $(this).siblings(".DetectButton-Colors").find('#DetectButton-ClosestColorValue').css({ "background-color": object_closest_saved_color[1] });
                 $(this).siblings(".DetectButton-Colors").find('.DetectButton-TopColors').html('');
 
                 top_colors.forEach((color, index) => {

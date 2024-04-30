@@ -20,6 +20,10 @@
     text-transform: capitalize;
 }
 
+#DetectButton-ClosestColorValue {
+    margin-inline-start: 1.2rem;
+}
+
 .DetectButton-TopColors {
     padding-block-start: 1.2rem;
 }
