@@ -5,8 +5,6 @@
  * See COPYING.txt for license details.
  */
 
-// @codingStandardsIgnoreFile
-
 /* @var $block \Magento\ConfigurableProduct\Block\Adminhtml\Product\Steps\AttributeValues */
 $attributesUrl = $block->getUrl('catalog/product_attribute/getAttributes');
 $optionsUrl = $block->getUrl('catalog/product_attribute/createOptions');
@@ -25,7 +23,7 @@ $optionsUrl = $block->getUrl('catalog/product_attribute/createOptions');
         <div class="attribute-entity" data-bind="attr:{'data-attribute-title':label}">
             <div class="attribute-entity-top">
                 <div class="attribute-entity-title-block">
-                    <span class="draggable-handle" data-role="draggable" title="<?= $block->escapeHtml(__('Sort Variations')) ?>">
+                    <span class="draggable-handle" data-role="draggable" title="<?= $block->escapeHtmlAttr(__('Sort Variations')) ?>">
                     </span>
                     <div class="attribute-entity-title" data-bind="text: label"></div>
                     <div class="attribute-options-block">
@@ -42,12 +40,12 @@ $optionsUrl = $block->getUrl('catalog/product_attribute/createOptions');
                                     __('Select All')
                                 ); ?></span>
                     </button>
-                    <button type="button" class="action-deselect-all action-tertiary" data-bind="click: $parent.deSelectAllAttributes" title="<?= $block->escapeHtml(__('Deselect All')) ?>">
+                    <button type="button" class="action-deselect-all action-tertiary" data-bind="click: $parent.deSelectAllAttributes" title="<?= $block->escapeHtmlAttr(__('Deselect All')) ?>">
                         <span><?= $block->escapeHtml(
                                     __('Deselect All')
                                 ); ?></span>
                     </button>
-                    <button type="button" class="action-remove-all action-tertiary" data-bind="click: $parent.removeAttribute.bind($parent)" title="<?= $block->escapeHtml(__('Remove Attribute')) ?>">
+                    <button type="button" class="action-remove-all action-tertiary" data-bind="click: $parent.removeAttribute.bind($parent)" title="<?= $block->escapeHtmlAttr(__('Remove Attribute')) ?>">
                         <span><?= $block->escapeHtml(
                                     __('Remove Attribute')
                                 ); ?></span>
@@ -62,16 +60,16 @@ $optionsUrl = $block->getUrl('catalog/product_attribute/createOptions');
                             <input type="checkbox" class="admin__control-checkbox" data-bind="checkedValue: id, checked: $parent.chosenOptions, attr:{id:id}" />
                             <label data-bind="text: label, visible: label, attr:{for:id}" class="admin__field-label"></label>
                         </div>
-                        <div class="admin__field admin__field-create-new" data-bind="visible: !label">
+                        <div class="admin__field admin__field-create-new" data-bind="attr:{'data-role':id}, visible: !label">
                             <div class="admin__field-control">
                                 <input class="admin__control-text" name="label" data-bind="value: label, valueUpdate: 'keyup'" type="text" />
                             </div>
-                            <button type="button" class="action-save" title="<?= $block->escapeHtml(__('Save Option')) ?>" data-action="save" data-bind="click: $parents[1].saveOption.bind($parent)">
+                            <button type="button" class="action-save" title="<?= $block->escapeHtmlAttr(__('Save Option')) ?>" data-action="save" data-bind="click: $parents[1].saveOption.bind($parent)">
                                 <span><?= $block->escapeHtml(
                                             __('Save Option')
                                         ); ?></span>
                             </button>
-                            <button type="button" class="action-remove" title="<?= $block->escapeHtml(__('Remove Option')) ?>" data-action="remove" data-bind="click: $parents[1].removeOption.bind($parent)">
+                            <button type="button" class="action-remove" title="<?= $block->escapeHtmlAttr(__('Remove Option')) ?>" data-action="remove" data-bind="click: $parents[1].removeOption.bind($parent)">
                                 <span><?= $block->escapeHtml(
                                             __('Remove Option')
                                         ); ?></span>

@@ -167,7 +167,6 @@ class DetectButton extends StepAbstract
             ->setPath('/')
             ->setHttpOnly(false)
             ->setDomain($this->sessionManager->getCookieDomain())
-            ->setSameSite('Strict')
             ->setSecure(true);
 
         $this->cookieManager->setPublicCookie(
