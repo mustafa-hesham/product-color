@@ -35,47 +35,47 @@ class DetectButton extends StepAbstract
     /**
      * @var Context
      */
-    protected Context $context;
+    protected $context;
 
     /**
      * @var StoreManagerInterface
      */
-    protected StoreManagerInterface $storeManager;
+    protected $storeManager;
 
     /**
      * @var Random
      */
-    protected Random $randomKey;
+    protected $randomKey;
 
     /**
      * @var SessionManagerInterface
      */
-    protected SessionManagerInterface $sessionManager;
+    protected $sessionManager;
 
     /**
      * @var CookieManagerInterface
      */
-    protected CookieManagerInterface $cookieManager;
+    protected $cookieManager;
 
     /**
      * @var CookieMetadataFactory
      */
-    protected CookieMetadataFactory $cookieMetadataFactory;
+    protected $cookieMetadataFactory;
 
     /**
      * @var Escaper
      */
-    protected Escaper $escaper;
+    protected $escaper;
 
     /**
      * @var ScopeConfigInterface
      */
-    protected ScopeConfigInterface $scopeConfig;
+    protected $scopeConfig;
 
     /**
      * @var AttributeRepository
      */
-    protected AttributeRepository $attributeRepository;
+    protected $attributeRepository;
 
     /**
      * Constructor function

@@ -22,7 +22,7 @@ class DetectButtonView implements ArgumentInterface
     /**
      * @var SerializerInterface
      */
-    protected SerializerInterface $serializer;
+    protected $serializer;
 
     /**
      * Constructor function

@@ -9,12 +9,10 @@
  -->
  <layout xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_layout.xsd">
     <referenceBlock
-        class="Magento\ConfigurableProduct\Block\Adminhtml\Product\Steps\AttributeValues"
         name="step2"
         template="TheArchitectAI_ProductColorDetection::catalog/product/edit/attribute/steps/attributes_values.phtml"
     />
     <referenceBlock
-        class="Magento\ConfigurableProduct\Block\Adminhtml\Product\Steps\Bulk"
         name="step3"
         template="TheArchitectAI_ProductColorDetection::catalog/product/edit/attribute/steps/bulk.phtml"
     >

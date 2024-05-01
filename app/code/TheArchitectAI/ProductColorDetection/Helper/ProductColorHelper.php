@@ -31,42 +31,42 @@ class ProductColorHelper extends AbstractHelper
     /**
      * @var AttributeRepository
      */
-    protected AttributeRepository $attributeRepository;
+    protected $attributeRepository;
 
     /**
      * @var SwatchCollectionFactory
      */
-    protected SwatchCollectionFactory $swatchCollectionFactory;
+    protected $swatchCollectionFactory;
 
     /**
      * @var MessageManager
      */
-    protected MessageManager $messageManager;
+    protected $messageManager;
 
     /**
      * @var AttributeOptionLabelInterfaceFactory
      */
-    protected AttributeOptionLabelInterfaceFactory $attributeOptionLabelFactory;
+    protected $attributeOptionLabelFactory;
 
     /**
      * @var AttributeOptionInterfaceFactory
      */
-    protected AttributeOptionInterfaceFactory $attributeOptionInterfaceFactory;
+    protected $attributeOptionInterfaceFactory;
 
     /**
      * @var AttributeOptionManagementInterface
      */
-    protected AttributeOptionManagementInterface $attributeOptionManagement;
+    protected $attributeOptionManagement;
 
     /**
      * @var SwatchFactory
      */
-    protected SwatchFactory $swatchFactory;
+    protected $swatchFactory;
 
     /**
      * @var IndexerFactory
      */
-    protected IndexerFactory $indexerFactory;
+    protected $indexerFactory;
 
     /**
      * Constructor function

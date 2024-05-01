@@ -5,8 +5,9 @@
  * See COPYING.txt for license details.
  */
 
+// @codingStandardsIgnoreFile
+
 /* @var $block \Magento\ConfigurableProduct\Block\Adminhtml\Product\Steps\AttributeValues */
-$isAllowedToManageAttributes = $block->getPermissions()->isAllowedToManageAttributes();
 $attributesUrl = $block->getUrl('catalog/product_attribute/getAttributes');
 $optionsUrl = $block->getUrl('catalog/product_attribute/createOptions');
 ?>
@@ -16,8 +17,7 @@ $optionsUrl = $block->getUrl('catalog/product_attribute/createOptions');
                                     ); ?></h2>
     <div class="steps-wizard-info">
         <span><?= $block->escapeHtml(
-                    __('Select values from each attribute to include in this product. ' .
-                        'Each unique combination of values creates a unique product SKU.')
+                    __('Select values from each attribute to include in this product. Each unique combination of values creates a unique product SKU.')
                 ); ?></span>
     </div>
     <div data-bind="foreach: attributes, sortableList: attributes">
@@ -62,7 +62,7 @@ $optionsUrl = $block->getUrl('catalog/product_attribute/createOptions');
                             <input type="checkbox" class="admin__control-checkbox" data-bind="checkedValue: id, checked: $parent.chosenOptions, attr:{id:id}" />
                             <label data-bind="text: label, visible: label, attr:{for:id}" class="admin__field-label"></label>
                         </div>
-                        <div class="admin__field admin__field-create-new" data-bind="attr:{'data-role':id}, visible: !label">
+                        <div class="admin__field admin__field-create-new" data-bind="visible: !label">
                             <div class="admin__field-control">
                                 <input class="admin__control-text" name="label" data-bind="value: label, valueUpdate: 'keyup'" type="text" />
                             </div>
@@ -80,11 +80,11 @@ $optionsUrl = $block->getUrl('catalog/product_attribute/createOptions');
                     </li>
                 </ul>
             </fieldset>
-            <?php if ($isAllowedToManageAttributes) : ?>
-                <button class="action-create-new action-tertiary" type="button" data-action="addOption" data-bind="click: $parent.createOption">
-                    <span><?= $block->escapeHtml(__('Create New Value')); ?></span>
-                </button>
-            <?php endif; ?>
+            <button class="action-create-new action-tertiary" type="button" data-action="addOption" data-bind="click: $parent.createOption, visible: canCreateOption">
+                <span><?= $block->escapeHtml(
+                            __('Create New Value')
+                        ); ?></span>
+            </button>
         </div>
     </div>
 </div>

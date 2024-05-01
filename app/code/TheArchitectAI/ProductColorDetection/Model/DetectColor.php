@@ -22,12 +22,12 @@ class DetectColor implements DetectColorInterface
     /**
      * @var BlockDetectColor
      */
-    protected BlockDetectColor $blockDetectColor;
+    protected $blockDetectColor;
 
     /**
      * @var ProductColorHelper
      */
-    protected ProductColorHelper $productColorHelper;
+    protected $productColorHelper;
 
     /**
      * Constructor function
