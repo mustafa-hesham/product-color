@@ -154,6 +154,9 @@ define([
                     top_colors_closest_colors
                 } = await self.sendPostRequest(self.images[0], isRemoveSkin);
 
+                $(this).parents().children('.DetectButton-Message')
+                    .find('.DetectButton-SuccessMessage, .DetectButton-ErrorMessage, .DetectButton-BulkSuccessMessage')
+                    .css({"display": "none"});
                 $(this).siblings(".DetectButton-Colors").find('#DetectButton-ColorValue').css({ "background-color": self.getRGBColorText(object_dominant_color_rgb) });
                 $(this).siblings(".DetectButton-Colors").find('#DetectButton-ColorName').val(approximate_color_name);
                 $(this).siblings(".DetectButton-Colors").find('#DetectButton-ColorHex').val(object_dominant_color_hex);
