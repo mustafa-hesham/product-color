@@ -177,14 +177,15 @@ define([
             $(document).on('click', '.DetectButton-AddOptionButton', async function() {
                 const colorName = $(this).parent().find('#DetectButton-ColorName').val();
                 const colorHex = $(this).parent().find('#DetectButton-ColorHex').val();
-                $(this).parents().children('.DetectButton-Message')
-                    .find('.DetectButton-SuccessMessage, .DetectButton-ErrorMessage, .DetectButton-BulkSuccessMessage')
-                    .css({"display": "none"});
 
                 if (colorName && colorHex) {
                     const {
                         is_added
                     } = await self.saveOption(self.capitalize(colorName), colorHex);
+
+                    $(this).parents().children('.DetectButton-Message')
+                        .find('.DetectButton-SuccessMessage, .DetectButton-ErrorMessage, .DetectButton-BulkSuccessMessage')
+                        .css({"display": "none"});
 
                     if(is_added && !$('.steps-wizard-title').html()) {
                         $(this).parents().children('.DetectButton-Message').find('.DetectButton-SuccessMessage').css({"display": "block"});
