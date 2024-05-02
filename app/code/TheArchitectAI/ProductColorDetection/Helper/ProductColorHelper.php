@@ -176,7 +176,7 @@ class ProductColorHelper extends AbstractHelper
      * @param string $label
      * @return integer|null
      */
-    public function getOptionId(string $label): int|null
+    public function getOptionId(string $label)
     {
         $options = $this->attributeRepository->get(BlockDetectColor::ATTRIBUTE_CODE)->getOptions();
 
@@ -251,7 +251,7 @@ class ProductColorHelper extends AbstractHelper
      *
      * @return array|null
      */
-    public function getRawColorOptions(): array|null
+    public function getRawColorOptions()
     {
         return $this->attributeRepository->get(BlockDetectColor::ATTRIBUTE_CODE)->getOptions();
     }

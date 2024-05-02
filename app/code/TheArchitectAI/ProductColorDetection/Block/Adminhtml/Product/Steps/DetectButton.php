@@ -185,7 +185,7 @@ class DetectButton extends StepAbstract
      * @param string $field_Id
      * @return string|integer|null
      */
-    public function getScopeConfig(string $field_Id): string|int|null
+    public function getScopeConfig(string $field_Id)
     {
         return $this->scopeConfig->getValue(self::SCOPE_CONFIG . $field_Id);
     }
@@ -235,7 +235,7 @@ class DetectButton extends StepAbstract
      *
      * @return integer|null
      */
-    public function getColorAttributeId(): int|null
+    public function getColorAttributeId()
     {
         return $this->attributeRepository->get(self::ATTRIBUTE_CODE)->getAttributeId();
     }

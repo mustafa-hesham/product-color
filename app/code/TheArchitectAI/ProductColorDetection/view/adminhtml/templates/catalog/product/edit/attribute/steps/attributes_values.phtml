@@ -6,7 +6,6 @@
  */
 
 /* @var $block \Magento\ConfigurableProduct\Block\Adminhtml\Product\Steps\AttributeValues */
-$isAllowedToManageAttributes = $block->getPermissions()->isAllowedToManageAttributes();
 $attributesUrl = $block->getUrl('catalog/product_attribute/getAttributes');
 $optionsUrl = $block->getUrl('catalog/product_attribute/createOptions');
 ?>
@@ -16,8 +15,7 @@ $optionsUrl = $block->getUrl('catalog/product_attribute/createOptions');
                                     ); ?></h2>
     <div class="steps-wizard-info">
         <span><?= $block->escapeHtml(
-                    __('Select values from each attribute to include in this product. ' .
-                        'Each unique combination of values creates a unique product SKU.')
+                    __('Select values from each attribute to include in this product. Each unique combination of values creates a unique product SKU.')
                 ); ?></span>
     </div>
     <div data-bind="foreach: attributes, sortableList: attributes">
@@ -80,11 +78,11 @@ $optionsUrl = $block->getUrl('catalog/product_attribute/createOptions');
                     </li>
                 </ul>
             </fieldset>
-            <?php if ($isAllowedToManageAttributes) : ?>
-                <button class="action-create-new action-tertiary" type="button" data-action="addOption" data-bind="click: $parent.createOption">
-                    <span><?= $block->escapeHtml(__('Create New Value')); ?></span>
-                </button>
-            <?php endif; ?>
+            <button class="action-create-new action-tertiary" type="button" data-action="addOption" data-bind="click: $parent.createOption, visible: canCreateOption">
+                <span><?= $block->escapeHtml(
+                            __('Create New Value')
+                        ); ?></span>
+            </button>
         </div>
     </div>
 </div>

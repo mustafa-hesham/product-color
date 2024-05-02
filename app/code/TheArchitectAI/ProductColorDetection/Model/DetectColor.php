@@ -172,7 +172,7 @@ class DetectColor implements DetectColorInterface
      * @param boolean $isRemoveSkin
      * @return string|boolean
      */
-    public function sendPostRequestToApi(string $imageBase64, bool $isRemoveSkin = true): string|bool
+    public function sendPostRequestToApi(string $imageBase64, bool $isRemoveSkin = true)
     {
         $curl = curl_init();
 

@@ -70,7 +70,7 @@ class DetectButtonView implements ArgumentInterface
      * @param array $data
      * @return string|boolean
      */
-    public function serializeData(array $data): string|bool
+    public function serializeData(array $data)
     {
         return $this->serializer->serialize($data);
     }
