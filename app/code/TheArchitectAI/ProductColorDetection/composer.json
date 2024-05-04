@@ -1,5 +1,5 @@
 {
-    "name": "TheArchitectAI/ProductColorDetection",
+    "name": "thearchitectai/product-color-detection",
     "description": "Implements product color extraction",
     "require": {
         "php": "~7.4.0||~8.1.0",
