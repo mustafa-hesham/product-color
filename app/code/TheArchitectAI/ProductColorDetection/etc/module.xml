@@ -11,6 +11,7 @@
     <module name="TheArchitectAI_ProductColorDetection">
         <sequence>
             <module name="Magento_ConfigurableProduct"/>
+            <module name="Magento_ProductVideo"/>
         </sequence>
     </module>
 </config>
