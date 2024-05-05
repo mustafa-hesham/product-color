@@ -6,8 +6,6 @@
  */
 
 /* @var $block \Magento\ConfigurableProduct\Block\Adminhtml\Product\Steps\AttributeValues */
-$attributesUrl = $block->getUrl('catalog/product_attribute/getAttributes');
-$optionsUrl = $block->getUrl('catalog/product_attribute/createOptions');
 ?>
 <div data-bind="scope: '<?= /* @noEscape */ $block->getComponentName() ?>'">
     <h2 class="steps-wizard-title"><?= $block->escapeHtml(
@@ -94,8 +92,8 @@ $optionsUrl = $block->getUrl('catalog/product_attribute/createOptions');
                     "<?= /* @noEscape */ $block->getComponentName() ?>": {
                         "component": "TheArchitectAI_ProductColorDetection/js/variations/steps/attributes_values",
                         "appendTo": "<?= /* @noEscape */ $block->getParentComponentName() ?>",
-                        "optionsUrl": "<?= /* @noEscape */ $attributesUrl ?>",
-                        "createOptionsUrl": "<?= /* @noEscape */ $optionsUrl ?>"
+                        "optionsUrl": "<?= /* @noEscape */ $block->getUrl('catalog/product_attribute/getAttributes') ?>",
+                        "createOptionsUrl": "<?= /* @noEscape */ $block->getUrl('catalog/product_attribute/createOptions') ?>"
                     }
                 }
             }
