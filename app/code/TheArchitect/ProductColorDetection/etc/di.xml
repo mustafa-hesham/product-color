@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * TheArchitect_ProductColorDetection
+ *
+ * @category TheArchitect
+ * @package TheArchitect_ProductColorDetection
+ */
+ -->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference
+     for="TheArchitect\ProductColorDetection\Api\DetectColorInterface"
+     type="TheArchitect\ProductColorDetection\Model\DetectColor"
+    />
+</config>
