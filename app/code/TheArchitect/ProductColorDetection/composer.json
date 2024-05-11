@@ -1,5 +1,5 @@
 {
-    "name": "TheArchitect/product-color-detection",
+    "name": "the_architect/product-color-detection",
     "description": "Implements product color extraction",
     "require": {
         "php": "~7.3.0||~7.4.0",
@@ -9,7 +9,7 @@
     "type": "magento2-module",
     "version": "1.0.0",
     "license": [
-        "Commercial"
+        "MIT"
     ],
     "autoload": {
         "files": [ "registration.php" ],
