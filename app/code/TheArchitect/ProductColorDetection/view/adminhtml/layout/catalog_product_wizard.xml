@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * TheArchitect_ProductColorDetection
+ *
+ * @category TheArchitect
+ * @package TheArchitect_ProductColorDetection
+ */
+ -->
+ <layout xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_layout.xsd">
+    <referenceBlock
+        name="step2"
+        template="TheArchitect_ProductColorDetection::catalog/product/edit/attribute/steps/attributes_values.phtml"
+    />
+    <referenceBlock
+        name="step3"
+        template="TheArchitect_ProductColorDetection::catalog/product/edit/attribute/steps/bulk.phtml"
+    >
+        <block
+         class="TheArchitect\ProductColorDetection\Block\Adminhtml\Product\Steps\DetectButton"
+         name="ProductColorDetection"
+         template="TheArchitect_ProductColorDetection::detectButton.phtml"
+         >
+            <arguments>
+                <argument name="detectButton" xsi:type="object">\TheArchitect\ProductColorDetection\ViewModel\Product\Steps\DetectButtonView</argument>
+            </arguments>
+        </block>
+    </referenceBlock>
+ </layout>
